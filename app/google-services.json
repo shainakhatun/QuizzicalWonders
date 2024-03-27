@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "111679667284",
+    "project_id": "quizzicalwonders",
+    "storage_bucket": "quizzicalwonders.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:111679667284:android:672f5691bf73adda5b41c1",
+        "android_client_info": {
+          "package_name": "com.example.quizzicalwonders"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBAupmW_MPGIhTWrn5_mNAqpej1jpaf3hs"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
