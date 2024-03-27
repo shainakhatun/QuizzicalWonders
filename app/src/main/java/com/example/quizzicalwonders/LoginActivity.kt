@@ -14,7 +14,6 @@ class LoginActivity : AppCompatActivity() {
 
         register.setOnClickListener {
             startActivity(Intent(this, RegistrationActivity::class.java))
-
         }
     }
 }
