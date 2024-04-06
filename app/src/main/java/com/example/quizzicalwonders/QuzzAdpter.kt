@@ -9,7 +9,11 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 
-class QuizAdapter(private val quizzes: List<QuizData>) : RecyclerView.Adapter<QuizAdapter.QuizViewHolder>() {
+class QuizAdapter(private val quizzes: List<QuizData>, private val listener: OnOptionSelectedListener) : RecyclerView.Adapter<QuizAdapter.QuizViewHolder>() {
+    interface OnOptionSelectedListener {
+        fun onLeftArrowClicked()
+        fun onRightArrowClicked()
+    }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): QuizViewHolder {
         val itemView = LayoutInflater.from(parent.context).inflate(R.layout.item_quiz, parent, false)
@@ -25,6 +29,16 @@ class QuizAdapter(private val quizzes: List<QuizData>) : RecyclerView.Adapter<Qu
 
 
     inner class QuizViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+        init {
+            val leftArrowImageView= itemView.findViewById<View>(R.id.left_arrow_image_view)
+            leftArrowImageView.setOnClickListener {
+                listener.onLeftArrowClicked()
+            }
+            val rightArrowImageView= itemView.findViewById<View>(R.id.right_arrow_image_view)
+            rightArrowImageView.setOnClickListener {
+                listener.onRightArrowClicked()
+            }
+        }
         fun bind(quiz: QuizData) {
             itemView.findViewById<TextView>(R.id.txtQuestion).text = quiz.question
 

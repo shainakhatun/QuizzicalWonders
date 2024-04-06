@@ -5,6 +5,7 @@ import android.content.ContentValues.TAG
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import android.widget.ImageView
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.firebase.database.DataSnapshot
@@ -13,7 +14,7 @@ import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
 
-class Quizz : AppCompatActivity() {
+class Quizz : AppCompatActivity(), QuizAdapter.OnOptionSelectedListener {
 
     private lateinit var database: FirebaseDatabase
     private lateinit var quizRef: DatabaseReference
@@ -21,6 +22,9 @@ class Quizz : AppCompatActivity() {
     private lateinit var quizList: MutableList<QuizData>
     private var totalQuestions: Int = 0
     private var correctAnswers: Int = 0
+    private var currentQuestionIndex = 0
+    private lateinit var adapter: QuizAdapter
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_quizz)
@@ -32,7 +36,8 @@ class Quizz : AppCompatActivity() {
         recyclerView = findViewById(R.id.recyclerView)
         val layoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
         recyclerView.layoutManager = layoutManager
-
+        adapter = QuizAdapter(quizList,this)
+        recyclerView.adapter = adapter
 
         quizRef.addListenerForSingleValueEvent(object : ValueEventListener {
             override fun onDataChange(dataSnapshot: DataSnapshot) {
@@ -64,7 +69,7 @@ class Quizz : AppCompatActivity() {
                 Log.d(TAG, "Quiz list size: ${quizList.size}")
 
                 // Notify RecyclerView adapter after adding all quiz data
-                val adapter = QuizAdapter(quizList)
+                val adapter = QuizAdapter(quizList,this@Quizz)
                 recyclerView.adapter = adapter
                 adapter.registerAdapterDataObserver(object : RecyclerView.AdapterDataObserver() {
                     override fun onChanged() {
@@ -102,5 +107,26 @@ class Quizz : AppCompatActivity() {
             dialog.dismiss()
         }
         alertDialog.show()
+    }
+
+    private fun navigateToPreviousQuestion() {
+        if (currentQuestionIndex > 0) {
+            currentQuestionIndex--
+            recyclerView.scrollToPosition(currentQuestionIndex)
+        }
+    }
+
+    private fun navigateToNextQuestion() {
+        if (currentQuestionIndex < quizList.size - 1) {
+            currentQuestionIndex++
+            recyclerView.scrollToPosition(currentQuestionIndex)
+        }
+    }
+    override fun onLeftArrowClicked() {
+        navigateToPreviousQuestion()
+    }
+
+    override fun onRightArrowClicked() {
+        navigateToNextQuestion()
     }
 }
