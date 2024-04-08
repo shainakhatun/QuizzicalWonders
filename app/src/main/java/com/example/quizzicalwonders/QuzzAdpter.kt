@@ -1,5 +1,6 @@
 package com.example.quizzicalwonders
 
+import android.content.res.ColorStateList
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -80,15 +81,34 @@ class QuizAdapter(private val quizzes: List<QuizData>, private val listener: OnO
     }
         private fun checkAnswer(selectedOption: RadioButton, correctAnswer: String) {
             val selectedText = selectedOption.text.toString()
-            if (selectedText == correctAnswer) {
-                (itemView.context as? Quizz)?.incrementCorrectAnswers()
-                Toast.makeText(itemView.context, "Correct!", Toast.LENGTH_SHORT).show()
+            val context = itemView.context
+            val color = if (selectedText == correctAnswer) {
+                itemView.resources.getColor(android.R.color.holo_green_dark) // Green color for correct answer
             } else {
-                Toast.makeText(itemView.context, "Incorrect!", Toast.LENGTH_SHORT).show()
+                itemView.resources.getColor(android.R.color.holo_red_light) // Red color for incorrect answer
             }
-            if ((itemView.context as? Quizz)?.isQuizCompleted() == true) {
-                (itemView.context as? Quizz)?.showScoreDialog()
+            selectedOption.buttonTintList = ColorStateList.valueOf(color)
+
+            val toastMessage = if (selectedText == correctAnswer) {
+                "Correct!"
+            } else {
+                "Incorrect!"
             }
+            Toast.makeText(context, toastMessage, Toast.LENGTH_SHORT).show()
+
+            if ((context as? Quizz)?.isQuizCompleted() == true) {
+                context.showScoreDialog()
+            }
+
+//            if (selectedText == correctAnswer) {
+//                (itemView.context as? Quizz)?.incrementCorrectAnswers()
+//                Toast.makeText(itemView.context, "Correct!", Toast.LENGTH_SHORT).show()
+//            } else {
+//                Toast.makeText(itemView.context, "Incorrect!", Toast.LENGTH_SHORT).show()
+//            }
+//            if ((itemView.context as? Quizz)?.isQuizCompleted() == true) {
+//                (itemView.context as? Quizz)?.showScoreDialog()
+//            }
         }
     }
 }
