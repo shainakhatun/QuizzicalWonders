@@ -1,6 +1,7 @@
 {
   "project_info": {
     "project_number": "111679667284",
+    "firebase_url": "https://quizzicalwonders-default-rtdb.firebaseio.com",
     "project_id": "quizzicalwonders",
     "storage_bucket": "quizzicalwonders.appspot.com"
   },
@@ -12,7 +13,20 @@
           "package_name": "com.example.quizzicalwonders"
         }
       },
-      "oauth_client": [],
+      "oauth_client": [
+        {
+          "client_id": "111679667284-r96c64bg6rp3b6soo8j22f8efb2nq444.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.quizzicalwonders",
+            "certificate_hash": "f8282aa2e387d81e95655d5d95f5e0c6103048cb"
+          }
+        },
+        {
+          "client_id": "111679667284-24kjlgrrgs896711lqec02l3ha6cu7eh.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
       "api_key": [
         {
           "current_key": "AIzaSyBAupmW_MPGIhTWrn5_mNAqpej1jpaf3hs"
@@ -20,7 +34,12 @@
       ],
       "services": {
         "appinvite_service": {
-          "other_platform_oauth_client": []
+          "other_platform_oauth_client": [
+            {
+              "client_id": "111679667284-24kjlgrrgs896711lqec02l3ha6cu7eh.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
         }
       }
     }

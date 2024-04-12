@@ -1,0 +1,19 @@
+<!-- blue_rounded_button_background.xml -->
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- Background color -->
+    <item>
+        <shape android:shape="rectangle">
+            <solid android:color="#007bff" />
+            <corners android:radius="8dp" />
+        </shape>
+    </item>
+    <item>
+        <shape android:shape="rectangle">
+            <solid android:color="@android:color/transparent" />
+            <stroke
+                android:width="2dp"
+            android:color="#007bff" />
+            <corners android:radius="8dp" />
+        </shape>
+    </item>
+</layer-list>
