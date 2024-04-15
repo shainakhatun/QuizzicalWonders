@@ -1,6 +1,7 @@
 package com.example.quizzicalwonders
 
 import android.content.res.ColorStateList
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -16,6 +17,13 @@ class QuizAdapter(private val quizzes: List<QuizData>, private val listener: OnO
         fun onRightArrowClicked()
     }
 
+    interface ScoreUpdateListener {
+        fun onScoreUpdated(correctResponses: Int, noResponse: Int)
+    }
+
+    private var correctResponses = 0
+    private var noResponse = 0
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): QuizViewHolder {
         val itemView = LayoutInflater.from(parent.context).inflate(R.layout.item_quiz, parent, false)
         return QuizViewHolder(itemView)
@@ -30,6 +38,11 @@ class QuizAdapter(private val quizzes: List<QuizData>, private val listener: OnO
 
 
     inner class QuizViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+        private val optionA = itemView.findViewById<RadioButton>(R.id.optionA)
+        private val optionB = itemView.findViewById<RadioButton>(R.id.optionB)
+        private val optionC = itemView.findViewById<RadioButton>(R.id.optionC)
+        private val optionD = itemView.findViewById<RadioButton>(R.id.optionD)
+
         init {
             val leftArrowImageView= itemView.findViewById<View>(R.id.left_arrow_image_view)
             leftArrowImageView.setOnClickListener {
@@ -43,18 +56,13 @@ class QuizAdapter(private val quizzes: List<QuizData>, private val listener: OnO
         fun bind(quiz: QuizData) {
             itemView.findViewById<TextView>(R.id.txtQuestion).text = quiz.question
 
-            val optionA = itemView.findViewById<RadioButton>(R.id.optionA)
-            val optionB = itemView.findViewById<RadioButton>(R.id.optionB)
-            val optionC = itemView.findViewById<RadioButton>(R.id.optionC)
-            val optionD = itemView.findViewById<RadioButton>(R.id.optionD)
-            val button = itemView.findViewById<Button>(R.id.btnShow)
-
             optionA.text = quiz.options["optionA"]
             optionB.text = quiz.options["optionB"]
             optionC.text = quiz.options["optionC"]
             optionD.text = quiz.options["optionD"]
 
-            button.setOnClickListener(View.OnClickListener {
+            val button = itemView.findViewById<Button>(R.id.btnShow)
+            button.setOnClickListener {
                 if (optionA.isChecked) {
                     checkAnswer(optionA, quiz.correctAnswer)
                 } else if (optionB.isChecked) {
@@ -64,7 +72,7 @@ class QuizAdapter(private val quizzes: List<QuizData>, private val listener: OnO
                 } else if (optionD.isChecked) {
                     checkAnswer(optionD, quiz.correctAnswer)
                 }
-            })
+            }
 //            optionA.setOnClickListener {
 //                checkAnswer(optionA, quiz.correctAnswer)
 //            }
@@ -83,11 +91,19 @@ class QuizAdapter(private val quizzes: List<QuizData>, private val listener: OnO
             val selectedText = selectedOption.text.toString()
             val context = itemView.context
             val color = if (selectedText == correctAnswer) {
-                itemView.resources.getColor(android.R.color.holo_green_dark) // Green color for correct answer
+                itemView.resources.getColor(android.R.color.holo_green_dark)
             } else {
-                itemView.resources.getColor(android.R.color.holo_red_light) // Red color for incorrect answer
+                itemView.resources.getColor(android.R.color.holo_red_light)
             }
             selectedOption.buttonTintList = ColorStateList.valueOf(color)
+
+            if (selectedText == correctAnswer) {
+                correctResponses++
+            } else {
+                if (!optionA.isChecked && !optionB.isChecked && !optionC.isChecked && !optionD.isChecked) {
+                    noResponse++
+                }
+            }
 
             val toastMessage = if (selectedText == correctAnswer) {
                 "Correct!"
@@ -96,19 +112,10 @@ class QuizAdapter(private val quizzes: List<QuizData>, private val listener: OnO
             }
             Toast.makeText(context, toastMessage, Toast.LENGTH_SHORT).show()
 
-            if ((context as? Quizz)?.isQuizCompleted() == true) {
-                context.showScoreDialog()
-            }
+            Log.d("correct", "Correct Responses: $correctResponses")
+            Log.d("noresponse", "No Response: $noResponse")
 
-//            if (selectedText == correctAnswer) {
-//                (itemView.context as? Quizz)?.incrementCorrectAnswers()
-//                Toast.makeText(itemView.context, "Correct!", Toast.LENGTH_SHORT).show()
-//            } else {
-//                Toast.makeText(itemView.context, "Incorrect!", Toast.LENGTH_SHORT).show()
-//            }
-//            if ((itemView.context as? Quizz)?.isQuizCompleted() == true) {
-//                (itemView.context as? Quizz)?.showScoreDialog()
-//            }
+            (itemView.context as? ScoreUpdateListener)?.onScoreUpdated(correctResponses, noResponse)
         }
     }
 }
