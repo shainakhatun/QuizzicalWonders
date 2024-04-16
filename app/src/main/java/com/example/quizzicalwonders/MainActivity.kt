@@ -17,4 +17,12 @@ class MainActivity : AppCompatActivity() {
             startActivity(Intent(this,Quizz::class.java))
         }
     }
+    override fun onBackPressed() {
+        super.onBackPressed()
+        val intent = Intent(this, LoginActivity::class.java)
+        // Add flags to clear the back stack and prevent the user from navigating back to Quizz activity
+        intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
+        startActivity(intent)
+        finish() // Finish th
+    }
 }

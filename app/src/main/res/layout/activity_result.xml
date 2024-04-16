@@ -44,13 +44,13 @@
                 android:text="Incorrect"
                 android:textSize="16sp" />
 
-            <TextView
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:gravity="center"
-                android:text="Unattempted"
-                android:textSize="16sp" />
+<!--            <TextView-->
+<!--                android:layout_width="0dp"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:layout_weight="1"-->
+<!--                android:gravity="center"-->
+<!--                android:text="Unattempted"-->
+<!--                android:textSize="16sp" />-->
 
         </LinearLayout>
 
@@ -82,15 +82,15 @@
                 android:textSize="24sp"
                 android:textStyle="bold" />
 
-            <TextView
-                android:id="@+id/tvUnattempted"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:gravity="center"
-                android:text="0"
-                android:textSize="24sp"
-                android:textStyle="bold" />
+<!--            <TextView-->
+<!--                android:id="@+id/tvUnattempted"-->
+<!--                android:layout_width="0dp"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:layout_weight="1"-->
+<!--                android:gravity="center"-->
+<!--                android:text="0"-->
+<!--                android:textSize="24sp"-->
+<!--                android:textStyle="bold" />-->
 
         </LinearLayout>
 
@@ -111,6 +111,15 @@
             android:layout_gravity="center_horizontal"
             android:layout_marginTop="12dp"
             android:text="Continuew Game" />
+
+        <Button
+            android:id="@+id/btnLogout"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="12dp"
+            android:text="Logout"
+            />
 
     </LinearLayout>
 

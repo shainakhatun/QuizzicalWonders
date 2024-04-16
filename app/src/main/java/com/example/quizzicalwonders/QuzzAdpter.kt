@@ -1,5 +1,6 @@
 package com.example.quizzicalwonders
 
+import android.app.AlertDialog
 import android.content.res.ColorStateList
 import android.util.Log
 import android.view.LayoutInflater
@@ -90,27 +91,36 @@ class QuizAdapter(private val quizzes: List<QuizData>, private val listener: OnO
         private fun checkAnswer(selectedOption: RadioButton, correctAnswer: String) {
             val selectedText = selectedOption.text.toString()
             val context = itemView.context
+            val builder = AlertDialog.Builder(context)
+
             val color = if (selectedText == correctAnswer) {
                 itemView.resources.getColor(android.R.color.holo_green_dark)
             } else {
                 itemView.resources.getColor(android.R.color.holo_red_light)
             }
             selectedOption.buttonTintList = ColorStateList.valueOf(color)
-
             if (selectedText == correctAnswer) {
+                val view = LayoutInflater.from(context).inflate(R.layout.dialog_correct, null)
+                builder.setView(view)
                 correctResponses++
             } else {
-                if (!optionA.isChecked && !optionB.isChecked && !optionC.isChecked && !optionD.isChecked) {
+                val view = LayoutInflater.from(context).inflate(R.layout.dialog_incorrect, null)
+                val correctAnswerTextView = view.findViewById<TextView>(R.id.textViewCorrectAnswer)
+                correctAnswerTextView.text = "Correct Answer: $correctAnswer"
+                builder.setView(view)
+                val isNoneSelected = !optionA.isChecked && !optionB.isChecked && !optionC.isChecked && !optionD.isChecked
+                if (isNoneSelected) {
                     noResponse++
+                    Log.d("unattempted", "Unattempted response incremented: $noResponse") // Debug logging
                 }
             }
 
-            val toastMessage = if (selectedText == correctAnswer) {
-                "Correct!"
-            } else {
-                "Incorrect!"
+                builder.setPositiveButton("OK") { dialog, _ ->
+                dialog.dismiss()
             }
-            Toast.makeText(context, toastMessage, Toast.LENGTH_SHORT).show()
+
+            val dialog = builder.create()
+            dialog.show()
 
             Log.d("correct", "Correct Responses: $correctResponses")
             Log.d("noresponse", "No Response: $noResponse")

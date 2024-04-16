@@ -110,5 +110,6 @@ class Quizz : AppCompatActivity(), QuizAdapter.OnOptionSelectedListener, QuizAda
     override fun onScoreUpdated(correctResponses: Int, noResponse: Int) {
         this.correctResponses = correctResponses
         this.noResponse = noResponse
+        Log.d("scoreupdate", "Updated scores: Correct - $correctResponses, Unattempted - $noResponse") // Debug logging
     }
 }
